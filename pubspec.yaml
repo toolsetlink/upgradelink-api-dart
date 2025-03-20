@@ -1,7 +1,9 @@
 name: upgradelink_api_dart
-description: A starting point for Dart libraries or applications.
 version: 1.0.0
+description: upgradelink_api_dart.
 repository: https://github.com/toolsetlink/upgradelink-api-dart
+homepage: https://github.com/toolsetlink/upgradelink-api-dart
+issue_tracker: https://github.com/toolsetlink/upgradelink-api-dart
 
 environment:
   sdk: ^3.6.1
