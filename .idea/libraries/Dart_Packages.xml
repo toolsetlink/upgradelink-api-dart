@@ -303,13 +303,6 @@
             </list>
           </value>
         </entry>
-        <entry key="timezone">
-          <value>
-            <list>
-              <option value="$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/timezone-0.9.4/lib" />
-            </list>
-          </value>
-        </entry>
         <entry key="typed_data">
           <value>
             <list>
@@ -412,7 +405,6 @@
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test-1.25.15/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test_api-0.7.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/test_core-0.6.8/lib" />
-      <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/timezone-0.9.4/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/typed_data-1.4.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/vm_service-15.0.0/lib" />
       <root url="file://$USER_HOME$/.pub-cache/hosted/pub.flutter-io.cn/watcher-1.1.1/lib" />

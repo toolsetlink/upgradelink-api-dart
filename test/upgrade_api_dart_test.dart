@@ -1,5 +1,5 @@
 import 'package:test/test.dart';
-import 'package:upgrade_api_dart/upgrade_api_dart.dart';
+import 'package:upgradelink_api_dart/upgradelink_api_dart.dart';
 
 void main() {
   group('A group of tests', () {

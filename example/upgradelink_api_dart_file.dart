@@ -1,4 +1,4 @@
-import 'package:upgrade_api_dart/upgrade_api_dart.dart';
+import 'package:upgradelink_api_dart/upgradelink_api_dart.dart';
 
 Future<void> main() async {
   final client = Client(

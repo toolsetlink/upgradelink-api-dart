@@ -79,15 +79,6 @@ void _handleException(Object e, StackTrace stackTrace) {
   }
 }
 
-void _handleError(http.Response response) {
-  if (response.statusCode != 200) {
-    final json = jsonDecode(response.body) as Map<String, dynamic>;
-    throw Exception(
-      'API Error: ${json['code']}, ${json['msg']}, Trace ID: ${json['traceId']}',
-    );
-  }
-}
-
 class Client {
   final String endpoint;
   final String accessKeyId;
@@ -104,9 +95,7 @@ class Client {
     if (response.statusCode != 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       throw Exception(
-        'API Error: ${json['code'] ?? 'N/A'}, ${json['msg'] ?? 'N/A'}, '
-        'Trace ID: ${json['traceId'] ?? 'N/A'}',
-      );
+          'API Error: ${json['code'] ?? 'N/A'}, ${json['msg'] ?? 'N/A'}, ');
     }
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     return UrlUpgradeResponse.fromJson(json);
