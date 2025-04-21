@@ -80,22 +80,24 @@ void _handleException(Object e, StackTrace stackTrace) {
 }
 
 class Client {
+  final String accessKey;
+  final String secretKey;
+  final String protocol;
   final String endpoint;
-  final String accessKeyId;
-  final String accessKeySecret;
 
   Client({
-    String endpoint = 'api.upgrade.toolsetlink.com',
-    required this.accessKeyId,
-    required this.accessKeySecret,
-  }) : endpoint = endpoint;
+    required this.accessKey,
+    required this.secretKey,
+    this.protocol = 'HTTP',
+    this.endpoint = 'api.upgrade.toolsetlink.com',
+  });
 
   // 响应处理
   UrlUpgradeResponse _handleUrlUpgradeResponse(http.Response response) {
     if (response.statusCode != 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       throw Exception(
-          'API Error: ${json['code'] ?? 'N/A'}, ${json['msg'] ?? 'N/A'}, ');
+          'API Error: code:${json['code'] ?? 'N/A'}, msg:${json['msg'] ?? 'N/A'}, docs:${json['docs'] ?? 'N/A'}, traceId:${json['traceId'] ?? 'N/A'} ');
     }
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     return UrlUpgradeResponse.fromJson(json);
@@ -108,20 +110,20 @@ class Client {
       final nonce = _generateNonce();
 
       final uri = Uri(
-        scheme: 'http',
+        scheme: protocol,
         host: endpoint,
         path: '/v1/url/upgrade',
       );
       final signature =
-          _generateSignature(body, nonce, accessKeySecret, timestamp, uri.path);
+          _generateSignature(body, nonce, secretKey, timestamp, uri.path);
 
       final headers = {
-        'host': uri.host, // 修复host头（使用Uri的host）
+        'host': uri.host,
         'content-type': 'application/json',
-        'x-timestamp': timestamp,
-        'x-nonce': nonce,
-        'x-accesskey': accessKeyId,
-        'x-signature': signature,
+        'X-Timestamp': timestamp,
+        'X-Nonce': nonce,
+        'X-AccessKey': accessKey,
+        'X-Signature': signature,
       };
 
       final response = await http.post(
@@ -142,7 +144,7 @@ class Client {
     if (response.statusCode != 200) {
       final json = jsonDecode(response.body) as Map<String, dynamic>;
       throw Exception(
-          'API Error: ${json['code'] ?? 'N/A'}, ${json['msg'] ?? 'N/A'}, ');
+          'API Error: code:${json['code'] ?? 'N/A'}, msg:${json['msg'] ?? 'N/A'}, docs:${json['docs'] ?? 'N/A'}, traceId:${json['traceId'] ?? 'N/A'} ');
     }
     final json = jsonDecode(response.body) as Map<String, dynamic>;
     return FileUpgradeResponse.fromJson(json);
@@ -155,20 +157,20 @@ class Client {
       final nonce = _generateNonce();
 
       final uri = Uri(
-        scheme: 'http',
+        scheme: protocol,
         host: endpoint,
         path: '/v1/file/upgrade',
       );
       final signature =
-          _generateSignature(body, nonce, accessKeySecret, timestamp, uri.path);
+          _generateSignature(body, nonce, secretKey, timestamp, uri.path);
 
       final headers = {
-        'host': uri.host, // 修复host头（使用Uri的host）
+        'host': uri.host,
         'content-type': 'application/json',
-        'x-timestamp': timestamp,
-        'x-nonce': nonce,
-        'x-accesskey': accessKeyId,
-        'x-signature': signature,
+        'X-Timestamp': timestamp,
+        'X-Nonce': nonce,
+        'X-AccessKey': accessKey,
+        'X-Signature': signature,
       };
 
       final response = await http.post(

@@ -2,16 +2,18 @@ import 'package:upgradelink_api_dart/upgradelink_api_dart.dart';
 
 Future<void> main() async {
   final client = Client(
-    accessKeyId: 'a112312',
-    accessKeySecret: 'a2123123',
+    accessKey: 'mui2W50H1j-OC4xD6PgQag',
+    secretKey: 'PEbdHFGC0uO_Pch7XWBQTMsFRxKPQAM2565eP8LJ3gc',
+    // protocol: 'HTTP',
+    // endpoint: 'api.upgrade.toolsetlink.com',
   );
 
   final request = UrlUpgradeRequest(
-    urlKey: 'SkEgKQ4SyLmzw',
+    urlKey: 'uJ47NPeT7qjLa1gL3sVHqw',
     versionCode: 1,
     appointVersionCode: 0,
-    devModelKey: 'your_dev_model_key',
-    devKey: 'your_dev_key',
+    devModelKey: '',
+    devKey: '',
   );
 
   final response = await client.getUrlUpgrade(request);
