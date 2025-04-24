@@ -8,6 +8,10 @@ import 'package:crypto/crypto.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import 'models/config.dart';
+import 'models/file_upgrade.dart';
+import 'models/url_upgrade.dart';
+
 // 1. 生成RFC3339时间戳（与Go完全一致）
 String _generateTimestamp() {
   // 创建一个DateTime实例
@@ -80,16 +84,10 @@ void _handleException(Object e, StackTrace stackTrace) {
 }
 
 class Client {
-  final String accessKey;
-  final String secretKey;
-  final String protocol;
-  final String endpoint;
+  final Config config;
 
   Client({
-    required this.accessKey,
-    required this.secretKey,
-    this.protocol = 'HTTP',
-    this.endpoint = 'api.upgrade.toolsetlink.com',
+    required this.config,
   });
 
   // 响应处理
@@ -110,19 +108,19 @@ class Client {
       final nonce = _generateNonce();
 
       final uri = Uri(
-        scheme: protocol,
-        host: endpoint,
+        scheme: config.protocol,
+        host: config.endpoint,
         path: '/v1/url/upgrade',
       );
-      final signature =
-          _generateSignature(body, nonce, secretKey, timestamp, uri.path);
+      final signature = _generateSignature(
+          body, nonce, config.secretKey, timestamp, uri.path);
 
       final headers = {
         'host': uri.host,
         'content-type': 'application/json',
         'X-Timestamp': timestamp,
         'X-Nonce': nonce,
-        'X-AccessKey': accessKey,
+        'X-AccessKey': config.accessKey,
         'X-Signature': signature,
       };
 
@@ -157,19 +155,19 @@ class Client {
       final nonce = _generateNonce();
 
       final uri = Uri(
-        scheme: protocol,
-        host: endpoint,
+        scheme: config.protocol,
+        host: config.endpoint,
         path: '/v1/file/upgrade',
       );
-      final signature =
-          _generateSignature(body, nonce, secretKey, timestamp, uri.path);
+      final signature = _generateSignature(
+          body, nonce, config.secretKey, timestamp, uri.path);
 
       final headers = {
         'host': uri.host,
         'content-type': 'application/json',
         'X-Timestamp': timestamp,
         'X-Nonce': nonce,
-        'X-AccessKey': accessKey,
+        'X-AccessKey': config.accessKey,
         'X-Signature': signature,
       };
 
@@ -184,203 +182,5 @@ class Client {
       _handleException(e, stackTrace);
       rethrow;
     }
-  }
-}
-
-class UrlUpgradeRequest {
-  final String urlKey;
-  final int versionCode;
-  final int appointVersionCode;
-  final String devModelKey;
-  final String devKey;
-
-  UrlUpgradeRequest({
-    required this.urlKey,
-    required this.versionCode,
-    required this.appointVersionCode,
-    required this.devModelKey,
-    required this.devKey,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'urlKey': urlKey,
-      'versionCode': versionCode,
-      'appointVersionCode': appointVersionCode,
-      'devModelKey': devModelKey,
-      'devKey': devKey,
-    };
-  }
-}
-
-class UrlUpgradeDataResponse {
-  final String urlKey;
-  final String versionName;
-  final int versionCode;
-  final String urlPath;
-  final int upgradeType;
-  final String promptUpgradeContent;
-
-  UrlUpgradeDataResponse({
-    required this.urlKey,
-    required this.versionName,
-    required this.versionCode,
-    required this.urlPath,
-    required this.upgradeType,
-    required this.promptUpgradeContent,
-  });
-
-  factory UrlUpgradeDataResponse.fromJson(Map<String, dynamic> json) {
-    return UrlUpgradeDataResponse(
-      urlKey: json['urlKey'] as String,
-      versionName: json['versionName'] as String,
-      versionCode: json['versionCode'] as int,
-      urlPath: json['urlPath'] as String,
-      upgradeType: json['upgradeType'] as int,
-      promptUpgradeContent: json['promptUpgradeContent'] as String,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'UrlUpgradeDataResponse{'
-        'urlKey: $urlKey, '
-        'versionName: $versionName, '
-        'versionCode: $versionCode, '
-        'urlPath: $urlPath, '
-        'upgradeType: $upgradeType, '
-        'promptUpgradeContent: $promptUpgradeContent'
-        '}';
-  }
-}
-
-class UrlUpgradeResponse {
-  final int code;
-  final String msg;
-  final UrlUpgradeDataResponse? data;
-
-  UrlUpgradeResponse({
-    required this.code,
-    required this.msg,
-    this.data,
-  });
-
-  factory UrlUpgradeResponse.fromJson(Map<String, dynamic> json) {
-    return UrlUpgradeResponse(
-      code: json['code'] as int,
-      msg: json['msg'] as String,
-      data: json['data'] != null
-          ? UrlUpgradeDataResponse.fromJson(
-              json['data'] as Map<String, dynamic>)
-          : null,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'UrlUpgradeResponse{'
-        'code: $code, '
-        'msg: $msg, '
-        'data: ${data != null ? data.toString() : "null"}'
-        '}';
-  }
-}
-
-class FileUpgradeRequest {
-  final String fileKey;
-  final int versionCode;
-  final int appointVersionCode;
-  final String devModelKey;
-  final String devKey;
-
-  FileUpgradeRequest({
-    required this.fileKey,
-    required this.versionCode,
-    required this.appointVersionCode,
-    required this.devModelKey,
-    required this.devKey,
-  });
-
-  Map<String, dynamic> toJson() {
-    return {
-      'fileKey': fileKey,
-      'versionCode': versionCode,
-      'appointVersionCode': appointVersionCode,
-      'devModelKey': devModelKey,
-      'devKey': devKey,
-    };
-  }
-}
-
-class FileUpgradeDataResponse {
-  final String fileKey;
-  final String versionName;
-  final int versionCode;
-  final String urlPath;
-  final int upgradeType;
-  final String promptUpgradeContent;
-
-  FileUpgradeDataResponse({
-    required this.fileKey,
-    required this.versionName,
-    required this.versionCode,
-    required this.urlPath,
-    required this.upgradeType,
-    required this.promptUpgradeContent,
-  });
-
-  factory FileUpgradeDataResponse.fromJson(Map<String, dynamic> json) {
-    return FileUpgradeDataResponse(
-      fileKey: json['fileKey'] as String,
-      versionName: json['versionName'] as String,
-      versionCode: json['versionCode'] as int,
-      urlPath: json['urlPath'] as String,
-      upgradeType: json['upgradeType'] as int,
-      promptUpgradeContent: json['promptUpgradeContent'] as String,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'FileUpgradeDataResponse{'
-        'fileKey: $fileKey, '
-        'versionName: $versionName, '
-        'versionCode: $versionCode, '
-        'urlPath: $urlPath, '
-        'upgradeType: $upgradeType, '
-        'promptUpgradeContent: $promptUpgradeContent'
-        '}';
-  }
-}
-
-class FileUpgradeResponse {
-  final int code;
-  final String msg;
-  final FileUpgradeDataResponse? data;
-
-  FileUpgradeResponse({
-    required this.code,
-    required this.msg,
-    this.data,
-  });
-
-  factory FileUpgradeResponse.fromJson(Map<String, dynamic> json) {
-    return FileUpgradeResponse(
-      code: json['code'] as int,
-      msg: json['msg'] as String,
-      data: json['data'] != null
-          ? FileUpgradeDataResponse.fromJson(
-              json['data'] as Map<String, dynamic>)
-          : null,
-    );
-  }
-
-  @override
-  String toString() {
-    return 'FileUpgradeResponse{'
-        'code: $code, '
-        'msg: $msg, '
-        'data: ${data != null ? data.toString() : "null"}'
-        '}';
   }
 }

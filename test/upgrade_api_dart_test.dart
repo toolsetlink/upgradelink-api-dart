@@ -1,4 +1,7 @@
 import 'package:test/test.dart';
+import 'package:upgradelink_api_dart/src/models/config.dart';
+import 'package:upgradelink_api_dart/src/models/file_upgrade.dart';
+import 'package:upgradelink_api_dart/src/models/url_upgrade.dart';
 import 'package:upgradelink_api_dart/upgradelink_api_dart.dart';
 
 void main() {
@@ -6,12 +9,13 @@ void main() {
     setUp(() {});
 
     test('UrlUpgradeRequest Test', () async {
-      final client = Client(
+      final config = Config(
         accessKey: 'mui2W50H1j-OC4xD6PgQag',
         secretKey: 'PEbdHFGC0uO_Pch7XWBQTMsFRxKPQAM2565eP8LJ3gc',
         // protocol: 'HTTP',
         // endpoint: 'api.upgrade.toolsetlink.com',
       );
+      final client = Client(config: config);
 
       final request = UrlUpgradeRequest(
         urlKey: 'uJ47NPeT7qjLa1gL3sVHqw',
@@ -26,10 +30,13 @@ void main() {
     });
 
     test('FileUpgradeRequest Test', () async {
-      final client = Client(
+      final config = Config(
         accessKey: 'mui2W50H1j-OC4xD6PgQag',
         secretKey: 'PEbdHFGC0uO_Pch7XWBQTMsFRxKPQAM2565eP8LJ3gc',
+        // protocol: 'HTTP',
+        // endpoint: 'api.upgrade.toolsetlink.com',
       );
+      final client = Client(config: config);
 
       final request = FileUpgradeRequest(
         fileKey: 'LOYlLXNy7wV3ySuh0XgtSg',
