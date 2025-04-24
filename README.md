@@ -8,7 +8,7 @@
 > - 使用此SDK，用户可以方便地在任何应用、任何时间、任何地点管理数据。
 
 ## 版本
-> - 当前版本: v1.0.3
+> - 当前版本: v1.0.4
 
 ## 使用文档
 > - [UpgradeLink SDK文档](http://upgrade.toolsetlink.com/upgrade/sdk/sdk.html)
